@@ -1,0 +1,43 @@
+* {
+  font-size: 1rem;
+}
+
+.outer {
+  min-height: 100vh;
+  background-color: gainsboro;
+}
+
+#calculator {
+  width: 23rem;
+  height: 25rem;
+  min-width: 275px;
+}
+
+.button-height {
+  height: 50%;
+}
+
+.button-row {
+  height: 20%;
+}
+
+.button-row-double {
+  height: 40%;
+}
+
+.button-row-inner {
+  height: 50%;
+}
+
+.button-row-innerFull {
+  height: 100%;
+}
+
+#input,
+#output {
+  height: 3rem;
+}
+#button-pad {
+  height: 19rem;
+}
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
