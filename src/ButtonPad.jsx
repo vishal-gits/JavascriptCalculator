@@ -6,7 +6,6 @@ const ButtonPad = ({
   outputDisplay,
   setOutputDisplay,
 }) => {
-  let output;
   let operators = ["/", "x", "+", "-"];
 
   // Handle Clear
@@ -22,23 +21,28 @@ const ButtonPad = ({
     setInputDisplay((prevValue) => {
       if (outputDisplay && operators.includes(newKey)) {
         prevValue = outputDisplay;
+        console.log("outputDisplay=", prevValue);
       }
 
       let checked = checkConditions(prevValue, newKey);
       if (checked) {
+        console.log("checked=", checked);
         return checked;
       }
-      let newValue = prevValue + newKey;
 
+      console.log("pv=", prevValue, "nk=", newKey);
+      let newValue = prevValue + newKey;
+      console.log("newValue=", newValue);
       return newValue;
     });
   };
 
   // Handle Equals Output
   const handleEquals = () => {
+    console.log("equalTo is pressed");
     if (inputDisplay) {
-      output = Eval(inputDisplay);
-      console.log(output, typeof output);
+      let output = Eval(inputDisplay);
+      console.log("output=", output, typeof output);
       setOutputDisplay(output);
     }
   };

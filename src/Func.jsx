@@ -1,4 +1,4 @@
-const operators = ["/", "*", "+"];
+const operators = ["/", "*", "+", "-"];
 
 // cheecking for x-multiply symbol change & double operators change to single operator
 // calculating final value
@@ -9,7 +9,7 @@ export const Eval = (str) => {
       arr[index] = "*";
     }
   });
-  //   console.log("arr=", arr);
+  console.log("arr=", arr);
   //get opertors list
   let arrMod = [];
   arr.forEach((element, index) => {
@@ -22,7 +22,7 @@ export const Eval = (str) => {
     }
     arrMod.push(element);
   });
-  //   console.log(arrMod);
+  console.log("arrMod-", arrMod);
   return eval(arrMod.join("")).toString();
 };
 
