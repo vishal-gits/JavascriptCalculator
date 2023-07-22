@@ -1,10 +1,12 @@
 * {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 1rem;
 }
 
 .outer {
   min-height: 100vh;
-  background-color: gainsboro;
+  background-color: slategray;
 }
 
 #calculator {
@@ -33,8 +35,8 @@
   height: 100%;
 }
 
-#input,
-#output {
+#expression,
+#display {
   height: 3rem;
 }
 #button-pad {

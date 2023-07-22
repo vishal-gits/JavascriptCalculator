@@ -1,35 +1,55 @@
 const operators = ["/", "*", "+", "-"];
+const nums = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
 
 // cheecking for x-multiply symbol change & double operators change to single operator
 // calculating final value
 export const Eval = (str) => {
   let arr = [...str];
+
   arr.forEach((element, index) => {
     if (element === "x") {
       arr[index] = "*";
     }
   });
-  console.log("arr=", arr);
-  //get opertors list
+
+  //Checking for double operator & subtract symbol condition
+  arr.reverse();
+
   let arrMod = [];
   arr.forEach((element, index) => {
-    if (arrMod.length >= 1) {
-      if (operators.includes(element)) {
-        if (operators.includes(arrMod[index - 1])) {
-          arrMod.pop();
-        }
+    if (operators.includes(element)) {
+      if (nums.includes(arr[index - 1])) {
+        arrMod.push(element);
+      } else if (arr[index - 1] === "-" && nums.includes(arr[index - 2])) {
+        arrMod.push(element);
+      }
+    } else if (nums.includes(element)) {
+      arrMod.push(element);
+    }
+  });
+  arrMod.reverse();
+
+  return eval(arrMod.join("")).toString();
+};
+
+export const checkDecimal = (prevValue, newKey) => {
+  if (prevValue.length > 0) {
+    let prevArr = [...prevValue];
+    let len = prevArr.length;
+    if (newKey === ".") {
+      if (prevArr[len - 1] === ".") {
+        return prevValue;
+      }
+      if (prevArr[len - 2] === ".") {
+        return prevValue;
       }
     }
-    arrMod.push(element);
-  });
-  console.log("arrMod-", arrMod);
-  return eval(arrMod.join("")).toString();
+  }
 };
 
 // checking for double zero and decimal
 export const checkConditions = (prevValue, newKey) => {
   if (prevValue.length > 0) {
-    // console.log(prevValue.length);
     let prevArr = [...prevValue];
     let len = prevArr.length;
     if (len === 1) {
@@ -47,8 +67,3 @@ export const checkConditions = (prevValue, newKey) => {
     }
   }
 };
-
-//if 2 or more operators are entered consecutively, the operation performed should be the last operator entered (excluding the negative (-) sign). For example, if 5 + * 7 = is entered, the result should be 35 (i.e. 5 * 7); if 5 * - 5 = is entered, the result should be -25 (i.e. 5 * (-5)).  ISSUE ONLY IN 2ND OPERATOR DIVIDE/MULTIPLY
-//Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation.
-//decimal precision of at least upto 4 decimal places
-// if eval is not due right format, display output, please correct input

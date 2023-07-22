@@ -2,8 +2,8 @@ import { useState } from "react";
 import ButtonPad from "./ButtonPad";
 
 const App = () => {
-  const [inputDisplay, setInputDisplay] = useState("");
-  const [outputDisplay, setOutputDisplay] = useState("");
+  const [expression, setExpression] = useState("");
+  const [display, setDisplay] = useState("");
 
   return (
     <div className="container-fluid d-flex justify-content-center align-items-center outer">
@@ -11,15 +11,15 @@ const App = () => {
         id="calculator"
         className="container-fluid bg-body-secondary d-flex flex-column border border-secondary border-5 m-0 p-0"
       >
-        <div id="display" className="col-12 d-flex flex-column">
-          <Output outputDisplay={outputDisplay} />
-          <Input inputDisplay={inputDisplay} />
+        <div id="screen" className="col-12 d-flex flex-column">
+          <Exp expression={expression} />
+          <Disp display={display} />
         </div>
         <ButtonPad
-          inputDisplay={inputDisplay}
-          setInputDisplay={setInputDisplay}
-          setOutputDisplay={setOutputDisplay}
-          outputDisplay={outputDisplay}
+          expression={expression}
+          setExpression={setExpression}
+          setDisplay={setDisplay}
+          display={display}
         />
       </div>
     </div>
@@ -27,25 +27,24 @@ const App = () => {
 };
 export default App;
 
-const Output = ({ outputDisplay }) => {
+const Exp = ({ expression }) => {
   return (
     <>
-      <div id="output" className="bg-secondary-subtle">
+      <div id="expression" className="bg-secondary-subtle">
         <p className="h-100 d-flex justify-content-end align-items-center p-2 flex-wrap">
-          {outputDisplay}
+          {expression}
         </p>
       </div>
     </>
   );
 };
 
-const Input = ({ inputDisplay }) => {
-  // console.log(inputDisplay);
+const Disp = ({ display }) => {
   return (
     <>
-      <div id="input" className="bg-light">
+      <div id="display" className="bg-light">
         <p className="h-100 d-flex justify-content-end align-items-center p-2 flex-wrap">
-          {inputDisplay}
+          {display}
         </p>
       </div>
     </>

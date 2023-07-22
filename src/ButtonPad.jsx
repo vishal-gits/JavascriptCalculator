@@ -1,49 +1,78 @@
-import { Eval, checkConditions } from "./Func";
+import { Eval, checkDecimal } from "./Func";
 
-const ButtonPad = ({
-  inputDisplay,
-  setInputDisplay,
-  outputDisplay,
-  setOutputDisplay,
-}) => {
+const ButtonPad = ({ expression, setExpression, display, setDisplay }) => {
   let operators = ["/", "x", "+", "-"];
 
   // Handle Clear
   const handleClear = () => {
-    setInputDisplay("");
-    setOutputDisplay("");
+    setExpression("");
+    setDisplay("0");
   };
   // Handle Num Input
+  const handleNum = (e) => {
+    //checking/correction for AC zero
+    if (display.length === 1 && display === "0") {
+      setDisplay("");
+    }
+    //checking/correction for single operator
+    if (display.length === 1 && operators.includes(display)) {
+      setDisplay("");
+    }
 
-  const handleClick = (e) => {
-    let newKey = e.currentTarget.textContent;
-
-    setInputDisplay((prevValue) => {
-      if (outputDisplay && operators.includes(newKey)) {
-        prevValue = outputDisplay;
-        console.log("outputDisplay=", prevValue);
-      }
-
-      let checked = checkConditions(prevValue, newKey);
+    let num = e.currentTarget.textContent;
+    // console.log(num);
+    setDisplay((prevValue) => {
+      let checked = checkDecimal(prevValue, num);
       if (checked) {
-        console.log("checked=", checked);
         return checked;
       }
 
-      console.log("pv=", prevValue, "nk=", newKey);
-      let newValue = prevValue + newKey;
-      console.log("newValue=", newValue);
-      return newValue;
+      let fullNum = prevValue + num;
+      return fullNum;
+    });
+    setExpression((prevValue) => {
+      let checked = checkDecimal(prevValue, num);
+      if (checked) {
+        return checked;
+      }
+      let fullNum = prevValue + num;
+      return fullNum;
     });
   };
 
-  // Handle Equals Output
-  const handleEquals = () => {
-    console.log("equalTo is pressed");
-    if (inputDisplay) {
-      let output = Eval(inputDisplay);
-      console.log("output=", output, typeof output);
-      setOutputDisplay(output);
+  // Handle Operator Input
+  const handleOperator = (e) => {
+    if (display.length === 1 && display === "0") {
+      setDisplay("");
+    }
+    let operator = e.currentTarget.textContent;
+
+    if (expression.length > 1 && expression.includes("=")) {
+      setDisplay(operator);
+      setExpression(() => {
+        let exp = display + operator;
+        return exp;
+      });
+    } else {
+      setDisplay(operator);
+      setExpression((prevValue) => {
+        let fullExpression = prevValue + operator;
+        return fullExpression;
+      });
+    }
+  };
+
+  //Handle Equal To
+  const handleEquals = (e) => {
+    let equalTo = e.currentTarget.textContent;
+    if (expression) {
+      let result = Eval(expression);
+
+      setDisplay(result);
+      setExpression((prevValue) => {
+        let resultExpression = prevValue + equalTo + result;
+        return resultExpression;
+      });
     }
   };
 
@@ -60,7 +89,7 @@ const ButtonPad = ({
         </button>
         <button
           type="button"
-          onClick={handleClick}
+          onClick={handleOperator}
           id="divide"
           className="col-3"
         >
@@ -68,7 +97,7 @@ const ButtonPad = ({
         </button>
         <button
           type="button"
-          onClick={handleClick}
+          onClick={handleOperator}
           id="multiply"
           className="col-3"
         >
@@ -76,28 +105,18 @@ const ButtonPad = ({
         </button>
       </div>
       <div className="row button-row">
-        <button
-          type="button"
-          onClick={handleClick}
-          id="seven"
-          className="col-3"
-        >
+        <button type="button" onClick={handleNum} id="seven" className="col-3">
           7
         </button>
-        <button
-          type="button"
-          onClick={handleClick}
-          id="eight"
-          className="col-3"
-        >
+        <button type="button" onClick={handleNum} id="eight" className="col-3">
           8
         </button>
-        <button type="button" onClick={handleClick} id="nine" className="col-3">
+        <button type="button" onClick={handleNum} id="nine" className="col-3">
           9
         </button>
         <button
           type="button"
-          onClick={handleClick}
+          onClick={handleOperator}
           id="subtract"
           className="col-3"
         >
@@ -105,16 +124,21 @@ const ButtonPad = ({
         </button>
       </div>
       <div className="row button-row">
-        <button type="button" onClick={handleClick} id="four" className="col-3">
+        <button type="button" onClick={handleNum} id="four" className="col-3">
           4
         </button>
-        <button type="button" onClick={handleClick} id="five" className="col-3">
+        <button type="button" onClick={handleNum} id="five" className="col-3">
           5
         </button>
-        <button type="button" onClick={handleClick} id="six" className="col-3">
+        <button type="button" onClick={handleNum} id="six" className="col-3">
           6
         </button>
-        <button type="button" onClick={handleClick} id="add" className="col-3">
+        <button
+          type="button"
+          onClick={handleOperator}
+          id="add"
+          className="col-3"
+        >
           +
         </button>
       </div>
@@ -123,7 +147,7 @@ const ButtonPad = ({
           <div className="row button-row-inner">
             <button
               type="button"
-              onClick={handleClick}
+              onClick={handleNum}
               id="one"
               className="col-4"
             >
@@ -131,7 +155,7 @@ const ButtonPad = ({
             </button>
             <button
               type="button"
-              onClick={handleClick}
+              onClick={handleNum}
               id="two"
               className="col-4"
             >
@@ -139,7 +163,7 @@ const ButtonPad = ({
             </button>
             <button
               type="button"
-              onClick={handleClick}
+              onClick={handleNum}
               id="three"
               className="col-4"
             >
@@ -149,7 +173,7 @@ const ButtonPad = ({
           <div className="row button-row-inner">
             <button
               type="button"
-              onClick={handleClick}
+              onClick={handleNum}
               id="zero"
               className="col-8"
             >
@@ -157,7 +181,7 @@ const ButtonPad = ({
             </button>
             <button
               type="button"
-              onClick={handleClick}
+              onClick={handleNum}
               id="decimal"
               className="col-4"
             >
